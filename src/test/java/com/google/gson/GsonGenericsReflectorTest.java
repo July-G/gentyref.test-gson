@@ -1,35 +1,19 @@
 package com.google.gson;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-import com.google.gson.reflect.TypeToken;
 import com.googlecode.gentyref.AbstractGenericsReflectorTest;
+import com.googlecode.gentyref.GenericTypeReflector;
 
-// Note: this test is not really complete, it just checks if it's seen as a supertype or not
+/**
+ * Tests the reflection in Gson using the test classes from gentyref.
+ * Note: this test is not really complete, it does not test gson as hard as GenTyRef is tested.
+ * It just checks if types are seen as a supertype or not
+ * because Gson doesn't have a counterpart for {@link GenericTypeReflector#getExactSuperType(Type, Class)}.
+ */
 public class GsonGenericsReflectorTest extends AbstractGenericsReflectorTest {
-	@Override
-	protected void testExactSuperclass(Type expectedSuperclass, Type type) {
-		testSupertype(expectedSuperclass, type);
-	}
-	
-	@Override
-	protected void testInexactSupertype(Type superType, Type subType) {
-		testSupertype(superType, subType);
-	}
-	
-	private void testSupertype(Type superType, Type subType) {
-		assertTrue(superType + " supertype of " + subType, TypeToken.get(superType).isAssignableFrom(subType));
-	}
-	
-	@Override
-	protected Type getExactReturnType(Method m, Type type) {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Override
-	protected Type getExactFieldType(Field f, Type type) {
-		return TypeInfoFactory.getTypeInfoForField(f, type).getActualType();
+
+	public GsonGenericsReflectorTest() {
+		super(new GsonReflectionStrategy());
 	}
 }
